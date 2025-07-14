@@ -1,5 +1,7 @@
 # Trucking Expense Tracker
 
+[live link](https://truck24.vercel.app/)
+
 ![Trucking Expense Tracker Dashboard](https://raw.githubusercontent.com/jaskarnvir/truck24/refs/heads/main/4.png) 
 
 ![Trucking Expense Tracker Dashboard](https://raw.githubusercontent.com/jaskarnvir/truck24/refs/heads/main/2.png) 
@@ -112,3 +114,4 @@ Once the setup is complete, you can run the development server:
 
 ```sh
 npm run dev
+
