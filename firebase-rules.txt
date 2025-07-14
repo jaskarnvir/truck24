@@ -1,0 +1,69 @@
+// Firestore rules
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Match any document in the 'users' collection
+    match /users/{userId} {
+      // Allow read and write only if the authenticated user ID matches the document ID
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      // Match any subcollection under a user document
+      match /{collection}/{docId} {
+        // Allow read and write only if the authenticated user ID matches the parent document ID
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+    }
+    
+    // Match trucks collection
+    match /trucks/{truckId} {
+      // Allow read and write only if the truck belongs to the authenticated user
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+      // For new documents, check the incoming data
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Match expenses collection
+    match /expenses/{expenseId} {
+      // Allow read and write only if the expense belongs to the authenticated user
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+      // For new documents, check the incoming data
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Match pay collection
+    match /pay/{payId} {
+      // Allow read and write only if the pay record belongs to the authenticated user
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+      // For new documents, check the incoming data
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Match maintenance collection
+    match /maintenance/{maintenanceId} {
+      // Allow read and write only if the maintenance record belongs to the authenticated user
+      allow read, write: if request.auth != null && resource.data.userId == request.auth.uid;
+      // For new documents, check the incoming data
+      allow create: if request.auth != null && request.resource.data.userId == request.auth.uid;
+    }
+    
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
+
+// Storage rules
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /users/{userId}/{allPaths=**} {
+      // Allow read and write only if the authenticated user ID matches the path segment
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Default deny
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

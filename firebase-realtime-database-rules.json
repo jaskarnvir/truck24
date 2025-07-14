@@ -1,0 +1,72 @@
+{
+  "rules": {
+    "users": {
+      "$userId": {
+        // Allow read and write access only to the authenticated user that matches the user ID
+        ".read": "$userId === auth.uid",
+        ".write": "$userId === auth.uid",
+
+        // Define rules for expenses subcollection
+        "expenses": {
+          ".read": "$userId === auth.uid",
+          ".write": "$userId === auth.uid",
+          "$expenseId": {
+            // Validate expense data structure
+            ".validate": "newData.hasChildren(['date', 'amount', 'category', 'description'])",
+            "amount": {
+              ".validate": "newData.isNumber() && newData.val() > 0"
+            },
+            "date": {
+              ".validate": "newData.isString()"
+            }
+          }
+        },
+
+        // Define rules for pay subcollection
+        "pay": {
+          ".read": "$userId === auth.uid",
+          ".write": "$userId === auth.uid",
+          "$payId": {
+            // Validate pay data structure
+            ".validate": "newData.hasChildren(['amount', 'startDate', 'endDate'])",
+            "amount": {
+              ".validate": "newData.isNumber() && newData.val() > 0"
+            }
+          }
+        },
+
+        // Define rules for trucks subcollection
+        "trucks": {
+          ".read": "$userId === auth.uid",
+          ".write": "$userId === auth.uid",
+          "$truckId": {
+            // Validate truck data structure
+            ".validate": "newData.hasChildren(['name'])",
+            "name": {
+              ".validate": "newData.isString() && newData.val().length > 0"
+            }
+          }
+        },
+
+        // Define rules for maintenance subcollection
+        "maintenance": {
+          ".read": "$userId === auth.uid",
+          ".write": "$userId === auth.uid",
+          "$maintenanceId": {
+            // Validate maintenance data structure
+            ".validate": "newData.hasChildren(['date', 'description', 'truckId'])",
+            "cost": {
+              ".validate": "!newData.exists() || newData.isNumber()"
+            }
+          }
+        }
+      }
+    },
+
+    // Deny access to all other paths
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}

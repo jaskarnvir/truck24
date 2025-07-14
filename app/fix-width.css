@@ -1,0 +1,20 @@
+/* Fix for width constraints */
+body,
+html {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden;
+}
+
+.w-full {
+  width: 100% !important;
+}
+
+table {
+  width: 100% !important;
+}
+
+/* Fix for any potential container width issues */
+div[data-sidebar="sidebar"] + div {
+  width: 100% !important;
+}
