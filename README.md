@@ -1,6 +1,6 @@
 # Trucking Expense Tracker
 
-[live link](https://truck24.vercel.app/)
+[live website link](https://truck24.vercel.app/)
 
 ![Trucking Expense Tracker Dashboard](https://raw.githubusercontent.com/jaskarnvir/truck24/refs/heads/main/4.png) 
 
